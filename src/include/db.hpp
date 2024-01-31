@@ -5,6 +5,7 @@
 #include <gitman.hpp>
 
 #define DEFAULT_DATABASE_LOCATION DEFAULT_ROOT_LOCATION + "/db.ini"
+#define DEFAULT_INSTALLED_DB_LOCATION DEFAULT_ROOT_LOCATION + "/installed.ini"
 
 namespace db{
     class package{
@@ -18,4 +19,5 @@ namespace db{
     bool has_package(std::string package_name, std::string repository);
     bool has_repo(std::string repo_name);
     package get_package(std::string package_name);
+    //void add_installed(package pkg);
 }

@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
@@ -5,7 +6,7 @@
 #include <unistd.h>
 #include <utils.h>
 
-void execute_cmd(std::string command) {
+int execute_cmd(std::string command) {
   char *temp = (char *)command.c_str();
   char *argv[200];
   int argc = 0;
@@ -21,6 +22,7 @@ void execute_cmd(std::string command) {
   } else {
     wait(&status);
   }
+  return status;
 }
 
 bool replace(std::string &str, const std::string &from, const std::string &to) {
@@ -70,4 +72,8 @@ std::string get_file(std::ifstream& is) {
 void create_folder(std::string folderPath) {
   std::string mkdirCmd = "mkdir -p " + folderPath;
   execute_cmd(mkdirCmd);
+}
+
+void set_env(std::string var, std::string value){
+  setenv(var.c_str(), value.c_str(), 1);
 }

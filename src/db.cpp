@@ -58,3 +58,13 @@ db::package db::get_package(std::string package_name){
     exit_fail();
     return pkg;
 }
+
+/*void db::add_installed(db::package pkg){
+    mINI::INIFile file(DEFAULT_INSTALLED_DB_LOCATION);
+    mINI::INIStructure ini;
+    ini["installed"][pkg.name] = pkg.hash;
+    if(!file_exist(DEFAULT_INSTALLED_DB_LOCATION)){
+        file.generate(ini);
+    }
+    file.write(ini);
+}*/
