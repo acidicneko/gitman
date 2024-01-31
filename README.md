@@ -14,6 +14,7 @@ For package dependency check respective package pages.
 ## Installation
 GitMan is still in its early stages of its development and there will be some quircks here and there.
 One line installation
-`sh
+
+`
 git clone https://github.com/acidicneko/gitman.git && cd gitman && ./install.sh
 `
