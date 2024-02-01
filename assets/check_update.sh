@@ -12,9 +12,9 @@ source "$PKG_LOC"/last_commit
 
 if [ "$CURRENT_HASH" = "$LAST_HASH" ] ; then
     echo "Already the latest version."
-    exit 1
+    exit 0
 else
     #echo "LAST_HASH=$CURRENT_HASH" > "$PKG_LOC"/last_commit
     echo "[$1] Update available."
-    exit 2
+    exit 1
 fi
