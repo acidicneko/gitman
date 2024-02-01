@@ -43,6 +43,17 @@ void local_package_install(db::package pkg){
     execute_cmd("cp gitman_install.sh " + DEFAULT_ROOT_LOCATION + "/packages/" + pkg.name);
 }
 
+void local_package_update(db::package pkg){
+    std::string dir = "/tmp/" + pkg.name;
+    int rc = chdir(dir.c_str());
+    if (rc < 0) {
+        std::cout << "\033[1;31mERROR\033[0m: Error occured while changing directory." << std::endl;
+        exit_fail();
+    }
+    execute_cmd("./gitman_install.sh update");
+    execute_cmd("cp gitman_install.sh " + DEFAULT_ROOT_LOCATION + "/packages/" + pkg.name);
+}
+
 void local_package_uninstall(db::package pkg){
     execute_cmd(DEFAULT_ROOT_LOCATION + "/packages/" + pkg.name + "/gitman_install.sh uninstall");
     execute_cmd("rm -rf " + DEFAULT_ROOT_LOCATION + "/packages/" + pkg.name);
@@ -91,6 +102,14 @@ void uninstall_package(std::string package_name){
 
 void update_package(std::string package_name){
     db::package pkg = db::get_package(package_name);
-    std::cout << "under construction!" << std::endl;
-    exit_fail();
+    if(execute_cmd(DEFAULT_ROOT_LOCATION + "/check_update.sh " + pkg.name) == 256){
+        clone_repo(pkg);
+        local_package_update(pkg);
+        std::cout << "Generating hash..." << std::endl;
+        if(execute_cmd(DEFAULT_ROOT_LOCATION + "/create_hash.sh " + pkg.name) != 0){
+            std::cout << "\033[1;31mERROR\033[0m: Error while creating hash." << std::endl;
+            exit_fail();
+        }
+        std::cout << "\033[1;32mINFO\033[0m: Package updated: " << pkg.name << std::endl;
+    }
 }

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-ROOT_LOC="$HOME"/.local/share/gitman
-PKG_LOC="$ROOT_LOC/$1"
+PKG_LOC="$GITMAN_ROOT/packages/$1"
 
-CURRENT_HASH=$(curl -H "Accept: application/vnd.github+json" \
+CURRENT_HASH=$(curl -s -H "Accept: application/vnd.github+json" \
         https://api.github.com/repos/acidicneko/$1/commits/main \
         | grep sha \
         | awk 'NR==1{print $2}' \
@@ -15,6 +14,7 @@ if [ "$CURRENT_HASH" = "$LAST_HASH" ] ; then
     echo "Already the latest version."
     exit 1
 else
-    echo "LAST_HASH=$CURRENT_HASH" > "$PKG_LOC"/last_commit
+    #echo "LAST_HASH=$CURRENT_HASH" > "$PKG_LOC"/last_commit
     echo "[$1] Update available."
+    exit 2
 fi

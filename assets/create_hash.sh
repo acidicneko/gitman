@@ -2,7 +2,7 @@
 
 PKG_LOC="$GITMAN_ROOT"/packages/"$1"
 
-HASH=$(curl -H "Accept: application/vnd.github+json" \
+HASH=$(curl -s -H "Accept: application/vnd.github+json" \
         https://api.github.com/repos/acidicneko/$1/commits/main \
         | grep sha \
         | awk 'NR==1{print $2}' \

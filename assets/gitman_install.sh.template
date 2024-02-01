@@ -1,13 +1,19 @@
+#!/bin/bash
 install() {
 }
 
 uninstall() {
 }
 
+update(){
+}
+
 if [ $1 = "install" ] ; then 
 	install
 elif [ $1 = "uninstall" ] ; then
 	uninstall
+elif [ $1 = "update" ] ; then
+	update
 else
 	echo unknown option
 	exit 1

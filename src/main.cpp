@@ -17,9 +17,10 @@ int main(int argc, char* argv[]){
             {"search", required_argument, NULL, 's'},
             {"install", required_argument, NULL, 'i'},
             {"remove", required_argument, NULL, 'r'},
+            {"help", no_argument, NULL, 'h'},
             {0}};
 
-        const int opt = getopt_long(argc, argv, "s:i:r:", longopts, 0);
+        const int opt = getopt_long(argc, argv, "s:i:r:vu:", longopts, 0);
 
         if (opt == -1) {
             break;
@@ -34,6 +35,13 @@ int main(int argc, char* argv[]){
                 break;
             case 'r':
                 uninstall_package(optarg);
+                break;
+            case 'u':
+                update_package(optarg);
+                break;
+            case 'v':
+                std::cout << "GitMan v1.0.0; A github based source package manager.\n" <<
+                                "Copyright acidicneko 2024 https://github.com/acidicneko" << std::endl;
                 break;
         }
     }

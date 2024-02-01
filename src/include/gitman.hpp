@@ -16,4 +16,5 @@ void release_lock();
 void search_package(std::string package_name);
 void install_package(std::string package_name);
 void uninstall_package(std::string package_name);
+void update_package(std::string package_name);
 bool is_installed(std::string package_name);
