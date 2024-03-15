@@ -18,3 +18,43 @@ One line installation
 ```sh
 git clone https://github.com/acidicneko/gitman.git && cd gitman && ./install.sh
 ```
+
+## How does it work?
+GitMan looks for software sources in a file `~/.local/share/gitman/db.ini`.
+
+A sample `db.ini` looks like this:
+```ini
+[config]
+repos=https://github.com/acidicneko https://github.com/AvishekPD
+
+# main repository
+[https://github.com/acidicneko]
+zeta=A C++ helper tool
+rci=A noob rice installer
+gitman=A git based package manager
+nyaafetch=A simple fetch tool.
+
+[https://github.com/AvishekPD]
+recscreen = A command line screen recorder
+
+[github-user-link]
+name-of-repository = a-simple-description
+```
+User can add a custom repository which is GitMan compatible to `db.ini` and install(update) the respective software via GitMan.
+
+To install a software:
+```
+gitman -i package-name
+```
+To search a software:
+```
+gitman -s package-name
+```
+To uninstall a software:
+```
+gitman -r package-name
+```
+To update a software:
+```
+gitman -u package-name
+```
