@@ -25,7 +25,7 @@ GitMan looks for software sources in a file `~/.local/share/gitman/db.ini`.
 A sample `db.ini` looks like this:
 ```ini
 [config]
-repos=https://github.com/acidicneko https://github.com/AvishekPD
+repos=https://github.com/acidicneko https://github.com/AvishekPD github-user-link
 
 # main repository
 [https://github.com/acidicneko]
