@@ -24,8 +24,7 @@ GitMan looks for software sources in the file `~/.config/gitman/packages.json`.
 
 A sample `packages.json` looks like this:
 ```json
-[config]
-r{
+{
   "packages": [
     {
       "name": "recscreen",
