@@ -52,6 +52,7 @@ User can add a custom repository which is GitMan compatible to `packages.json` a
 To sync(install) all packages:
 ```
 gitman -s
+```
 
 To update all packages:
 ```
