@@ -17,7 +17,7 @@ uninstall() {
 
 update(){
 	make -j $(nproc)
-	cp build/gitman ~/.local/share/gitman/bin/gitman
+	mv build/gitman ~/.local/share/gitman/bin/gitman
 	cp assets/* ~/.local/share/gitman/
 }
 
