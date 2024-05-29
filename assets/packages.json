@@ -1,6 +1,12 @@
 {
   "packages": [
     {
+      "name": "gitman",
+      "repo": "acidicneko/gitman",
+      "branch": "main",
+      "type": "commit" 
+    },
+    {
       "name": "recscreen",
       "repo": "AvishekPD/recscreen",
       "branch": "master",

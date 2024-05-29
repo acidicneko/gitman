@@ -123,6 +123,7 @@ void syncPackages(){
         }
     }
     if(!synced) std::cout << "Already synced. There\'s nothing to do" << std::endl;
+    else std::cout << "Sync Complete!" << std::endl;
     cleanup();
 }
 
@@ -163,5 +164,6 @@ void syncPackagesUpdate(){
         }
     }
     if(!synced) std::cout << "Already synced. There\'s nothing to do" << std::endl;
+    else std::cout << "Sync Complete!" << std::endl;
     cleanup();
 }
