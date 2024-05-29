@@ -20,41 +20,41 @@ git clone https://github.com/acidicneko/gitman.git && cd gitman && ./install.sh
 ```
 
 ## How does it work?
-GitMan looks for software sources in a file `~/.local/share/gitman/db.ini`.
+GitMan looks for software sources in the file `~/.config/gitman/packages.json`.
 
-A sample `db.ini` looks like this:
-```ini
+A sample `packages.json` looks like this:
+```json
 [config]
-repos=https://github.com/acidicneko https://github.com/AvishekPD github-user-link
+r{
+  "packages": [
+    {
+      "name": "recscreen",
+      "repo": "AvishekPD/recscreen",
+      "branch": "master",
+      "type": "commit" 
+    },
+    {
+      "name":"zeta",
+      "repo": "acidicneko/zeta",
+      "branch": "main",
+      "type": "commit"
+    },
+    {
+      "name":"repo-name",
+      "repo": "username/repo-name",
+      "branch": "branch-name",
+      "type": "commit"
+    }
+  ] 
+}
+```
+User can add a custom repository which is GitMan compatible to `packages.json` and install(update) the respective software via GitMan.
 
-# main repository
-[https://github.com/acidicneko]
-zeta=A C++ helper tool
-rci=A noob rice installer
-gitman=A git based package manager
-nyaafetch=A simple fetch tool.
+To sync(install) all packages:
+```
+gitman -s
 
-[https://github.com/AvishekPD]
-recscreen = A command line screen recorder
-
-[github-user-link]
-name-of-repository = a-simple-description
-```
-User can add a custom repository which is GitMan compatible to `db.ini` and install(update) the respective software via GitMan.
-
-To install a software:
-```
-gitman -i package-name
-```
-To search a software:
-```
-gitman -s package-name
-```
-To uninstall a software:
-```
-gitman -r package-name
-```
-To update a software:
+To update all packages:
 ```
 gitman -u package-name
 ```
