@@ -91,6 +91,7 @@ cJSON* getPackageJSON(){
 
 void syncPackages(){
     bool synced = false;
+    int synced_number = 0;
     cJSON* package = NULL;
     cJSON* packages = getPackageJSON();
     cJSON_ArrayForEach(package, packages){
@@ -124,11 +125,13 @@ void syncPackages(){
     }
     if(!synced) std::cout << "Already synced. There\'s nothing to do" << std::endl;
     else std::cout << "Sync Complete!" << std::endl;
+    std::cout << "Synced " << synced_number << " packages." << std::endl;
     cleanup();
 }
 
 void syncPackagesUpdate(){
     bool synced = false;
+    int synced_number =  0;
     cJSON* package = NULL;
     cJSON* packages = getPackageJSON();
     cJSON_ArrayForEach(package, packages){
@@ -158,6 +161,7 @@ void syncPackagesUpdate(){
                         exit_fail();
                     }
                     std::cout << "\033[1;32mINFO\033[0m: Package updated: " << temp.name << std::endl;
+                    synced_number++;
                     synced = true;
                 }
             }
@@ -165,5 +169,6 @@ void syncPackagesUpdate(){
     }
     if(!synced) std::cout << "Already synced. There\'s nothing to do" << std::endl;
     else std::cout << "Sync Complete!" << std::endl;
+    std::cout << "Synced " << synced_number << " packages." << std::endl;
     cleanup();
 }

@@ -5,24 +5,6 @@
       "repo": "acidicneko/gitman",
       "branch": "main",
       "type": "commit" 
-    },
-    {
-      "name": "recscreen",
-      "repo": "AvishekPD/recscreen",
-      "branch": "master",
-      "type": "commit" 
-    },
-    {
-      "name":"zeta",
-      "repo": "acidicneko/zeta",
-      "branch": "main",
-      "type": "commit"
-    },
-    {
-      "name":"rci",
-      "repo": "acidicneko/rci",
-      "branch": "main",
-      "type": "commit"
     }
   ] 
 }
