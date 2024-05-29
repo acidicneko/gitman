@@ -1,11 +1,14 @@
 #!/bin/bash
 install() {
 	make -j $(nproc)
-    mkdir -p ~/.local/share/gitman/bin
-    mkdir -p ~/.local/share/gitman/packages/gitman
+	mkdir -p ~/.local/share/gitman/bin
+	mkdir -p ~/.local/share/gitman/packages/gitman
+	mkdir -p ~/.config/gitman
 
-    cp build/gitman ~/.local/share/gitman/bin/gitman
-    cp assets/* ~/.local/share/gitman/
+	cp build/gitman ~/.local/share/gitman/bin/gitman
+	cp assets/* ~/.local/share/gitman/
+	cp gitman.sh ~/.local/share/gitman/packages/gitman/
+	cp assets/packages.json ~/.config/gitman/
 }
 
 uninstall() {
@@ -13,7 +16,10 @@ uninstall() {
 }
 
 update(){
-	install
+	make -j $(nproc)
+	cp build/gitman ~/.local/share/gitman/bin/gitman
+	cp assets/* ~/.local/share/gitman/
+	cp gitman.sh ~/.local/share/gitman/packages/gitman/
 }
 
 if [ $1 = "install" ] ; then 
