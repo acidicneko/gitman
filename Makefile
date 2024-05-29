@@ -1,6 +1,7 @@
 CC = g++
-CFILES = $(shell find src/ -type f -name '*.cpp')
-OFILES = $(CFILES:.cpp=.o)
+CPPFILES = $(shell find src/ -type f -name '*.cpp')
+CFILES = $(shell find src/ -type f -name '*.c')
+OFILES = $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 
 TARGET = build/gitman
 
@@ -12,7 +13,11 @@ $(TARGET): $(OFILES)
 
 %.o: %.cpp
 	@echo [CC] $@
-	@$(CC) -I src/include/ -c $< -o $@
+	@$(CC) -Isrc/include/ -c $< -o $@
+
+%.o: %.c
+	@echo [CC] $@
+	@$gcc -Isrc/include -c $< -o $@
 
 clean:
 	@echo [CLEAN]

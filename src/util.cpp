@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <utils.h>
+#include <util.hpp>
 
 int execute_cmd(std::string command) {
   char *temp = (char *)command.c_str();

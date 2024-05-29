@@ -1,20 +1,33 @@
 #pragma once
-#include <iostream>
-#include <utils.h>
 
+#include <iostream>
+#include <util.hpp>
+#include <cJSON.h>
+
+#define DEFAULT_CLONE_LOCATION "/tmp/gitman/"
 #define DEFAULT_ROOT_LOCATION GetEnv("HOME") + "/.local/share/gitman"
 #define DEFAULT_LOCK_LOCATION DEFAULT_ROOT_LOCATION + "/gitman.lock"
+#define DEFAULT_PACKAGE_JSON GetEnv("HOME") + "/.config/gitman/packages.json"
 
-typedef struct {
+
+typedef enum {
+    Commit = 0,
+    Release = 1
+} type_t;
+
+class pkg{
+public:
     std::string name;
-    std::string git_repo;
-    std::string commit_id;
-} package_t;
+    std::string repo;
+    std::string branch;
+    std::string id;
+    type_t type;
+};
+
 
 void acquire_lock();
 void release_lock();
-void search_package(std::string package_name);
-void install_package(std::string package_name);
-void uninstall_package(std::string package_name);
-void update_package(std::string package_name);
+void syncPackages();
+void syncPackagesUpdate();
 bool is_installed(std::string package_name);
+cJSON* getPackageJSON();
