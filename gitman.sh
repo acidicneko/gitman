@@ -19,7 +19,6 @@ update(){
 	make -j $(nproc)
 	cp build/gitman ~/.local/share/gitman/bin/gitman
 	cp assets/* ~/.local/share/gitman/
-	cp gitman.sh ~/.local/share/gitman/packages/gitman/
 }
 
 if [ $1 = "install" ] ; then 
