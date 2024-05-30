@@ -20,7 +20,7 @@ public:
     std::string name;
     std::string repo;
     std::string branch;
-    std::string id;
+    std::string id = "null";
     type_t type;
 };
 

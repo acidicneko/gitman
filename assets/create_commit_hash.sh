@@ -2,6 +2,11 @@
 
 PKG_LOC="$GITMAN_ROOT"/packages/"$1"
 
+if [ $4 != "null" ] ; then
+        echo "LAST_HASH=$4" > "$PKG_LOC"/last_commit
+        exit
+fi
+
 HASH=$(curl -s -H "Accept: application/vnd.github+json" \
         https://api.github.com/repos/$2/commits/$3 \
         | grep sha \

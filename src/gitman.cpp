@@ -26,6 +26,7 @@ void release_lock(){
     std::filesystem::remove(DEFAULT_LOCK_LOCATION);
 }
 
+
 void cleanup(){
     std::string rm = "rm -rf ";
     execute_cmd(rm + DEFAULT_CLONE_LOCATION);
@@ -49,6 +50,10 @@ void local_change_dir(std::string dir){
 
 void local_package_install(pkg temp){
     local_change_dir(DEFAULT_CLONE_LOCATION + temp.name);
+    if (temp.id != "null"){
+        std::cout << "["<< temp.name<< "] User specified commit detected." << std::endl;
+        execute_cmd("git reset --hard " + temp.id);
+    }
     execute_cmd("./gitman.sh install");
     execute_cmd("cp gitman.sh " + DEFAULT_ROOT_LOCATION + "/packages/" + temp.name);
     local_change_dir(DEFAULT_ROOT_LOCATION);
@@ -56,6 +61,9 @@ void local_package_install(pkg temp){
 
 void local_package_update(pkg temp){
     local_change_dir(DEFAULT_CLONE_LOCATION + temp.name);
+    if (temp.id != "null"){
+        execute_cmd("git reset --hard " + temp.id);
+    }
     execute_cmd("./gitman.sh update");
     execute_cmd("cp gitman.sh " + DEFAULT_ROOT_LOCATION + "/packages/" + temp.name);
     local_change_dir(DEFAULT_ROOT_LOCATION);
@@ -73,14 +81,14 @@ cJSON* getPackageJSON(){
 
     
     cJSON* packageJSON = cJSON_Parse(jsonString.c_str());
-    if (packageJSON== NULL)
+    if (packageJSON == NULL)
     {
         const char *error_ptr = cJSON_GetErrorPtr();
         if (error_ptr != NULL)
         {
             fprintf(stderr, "Error before: %s\n", error_ptr);
         }
-        exit(EXIT_FAILURE);
+        exit_seq();
     }
     cJSON *packages = NULL;
 
@@ -98,11 +106,15 @@ void syncPackages(){
         cJSON *name = cJSON_GetObjectItemCaseSensitive(package, "name");
         cJSON *repo = cJSON_GetObjectItemCaseSensitive(package, "repo");
         cJSON *branch = cJSON_GetObjectItemCaseSensitive(package, "branch");
-        cJSON *type = cJSON_GetObjectItemCaseSensitive(package, "type");
+        cJSON *onCommit = cJSON_GetObjectItemCaseSensitive(package, "onCommit");
+
         pkg temp;
         temp.name = name->valuestring;
         temp.repo = repo->valuestring;
         temp.branch = branch->valuestring;
+        if (cJSON_IsString(onCommit) && (onCommit->valuestring != NULL)){
+            temp.id = onCommit->valuestring;
+        }
         if(is_installed(temp.name)){
             std::cout << "\033[1;32mINFO\033[0m: Skipping: " << temp.name << std::endl;
         } else {
@@ -114,7 +126,7 @@ void syncPackages(){
                 local_package_install(temp);
                 std::cout << "Generating hash..." << std::endl;
                 if(execute_cmd(DEFAULT_ROOT_LOCATION + "/create_commit_hash.sh " + temp.name + " " 
-                                + temp.repo + " " + temp.branch) != 0){
+                                + temp.repo + " " + temp.branch + " " + temp.id) != 0){
                     std::cout << "\033[1;31mERROR\033[0m: Error while creating hash." << std::endl;
                     exit_fail();
                 }
@@ -138,16 +150,19 @@ void syncPackagesUpdate(){
         cJSON *name = cJSON_GetObjectItemCaseSensitive(package, "name");
         cJSON *repo = cJSON_GetObjectItemCaseSensitive(package, "repo");
         cJSON *branch = cJSON_GetObjectItemCaseSensitive(package, "branch");
-        cJSON *type = cJSON_GetObjectItemCaseSensitive(package, "type");
+        cJSON *onCommit = cJSON_GetObjectItemCaseSensitive(package, "onCommit");
         pkg temp;
         temp.name = name->valuestring;
         temp.repo = repo->valuestring;
         temp.branch = branch->valuestring;
+        if (cJSON_IsString(onCommit) && (onCommit->valuestring != NULL)){
+            temp.id = onCommit->valuestring;
+        }
         if(!is_installed(temp.name)){
             std::cout << "\033[1;32mINFO\033[0m: Skipping non-installed: " << temp.name << std::endl;
         } else {
             int status = execute_cmd(DEFAULT_ROOT_LOCATION + "/check_commit_update.sh " + temp.name + " " 
-                                + temp.repo + " " + temp.branch);
+                                + temp.repo + " " + temp.branch + " " + temp.id);
             if(status == 256){
                 clone_repo(temp);
                 if(!file_exist(DEFAULT_CLONE_LOCATION + temp.name + "/gitman.sh")){
@@ -156,7 +171,7 @@ void syncPackagesUpdate(){
                     local_package_update(temp);
                     std::cout << "Generating hash..." << std::endl;
                     if(execute_cmd(DEFAULT_ROOT_LOCATION + "/create_commit_hash.sh " + temp.name + " " 
-                                    + temp.repo + " " + temp.branch) != 0){
+                                    + temp.repo + " " + temp.branch + " " + temp.id) != 0){
                         std::cout << "\033[1;31mERROR\033[0m: Error while creating hash." << std::endl;
                         exit_fail();
                     }
