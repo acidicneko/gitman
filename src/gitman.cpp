@@ -131,6 +131,7 @@ void syncPackages(){
                     exit_fail();
                 }
                 std::cout << "\033[1;32mINFO\033[0m: Package installed: " << temp.name << std::endl;
+                synced++;
                 synced = true;
             }
         }
