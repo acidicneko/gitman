@@ -24,7 +24,6 @@ public:
     type_t type;
 };
 
-
 void acquire_lock();
 void release_lock();
 void syncPackages();

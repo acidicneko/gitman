@@ -6,6 +6,8 @@
 #include <exit.hpp>
 #include <unistd.h>
 
+bool view_script = false;
+
 void acquire_lock(){
     std::ifstream lock_file(DEFAULT_LOCK_LOCATION);
     if(lock_file){
@@ -54,6 +56,10 @@ void local_package_install(pkg temp){
         std::cout << "["<< temp.name<< "] User specified commit detected." << std::endl;
         execute_cmd("git reset --hard " + temp.id);
     }
+    if(view_script){
+        execute_cmd("less gitman.sh");
+    }
+    create_folder(DEFAULT_ROOT_LOCATION + "/packages/" + temp.name);
     execute_cmd("./gitman.sh install");
     execute_cmd("cp gitman.sh " + DEFAULT_ROOT_LOCATION + "/packages/" + temp.name);
     local_change_dir(DEFAULT_ROOT_LOCATION);
@@ -63,6 +69,9 @@ void local_package_update(pkg temp){
     local_change_dir(DEFAULT_CLONE_LOCATION + temp.name);
     if (temp.id != "null"){
         execute_cmd("git reset --hard " + temp.id);
+    }
+    if(view_script){
+        execute_cmd("less gitman.sh");
     }
     execute_cmd("./gitman.sh update");
     execute_cmd("cp gitman.sh " + DEFAULT_ROOT_LOCATION + "/packages/" + temp.name);
@@ -91,8 +100,12 @@ cJSON* getPackageJSON(){
         exit_seq();
     }
     cJSON *packages = NULL;
-
+    cJSON *viewScriptJSONObject = NULL;
     packages = cJSON_GetObjectItemCaseSensitive(packageJSON, "packages");
+    viewScriptJSONObject = cJSON_GetObjectItemCaseSensitive(packageJSON, "viewScript");
+    if(cJSON_IsTrue(viewScriptJSONObject)){
+        view_script = true;
+    }
     //cJSON_Delete(packageJSON);
     return packages;
 }
@@ -122,7 +135,6 @@ void syncPackages(){
             if(!file_exist(DEFAULT_CLONE_LOCATION + temp.name + "/gitman.sh")){
                 std::cout << "\033[1;31mERROR\033[0m: [" << temp.repo << "] isn't GitMan compatible! Skipping..." << std::endl;
             } else {
-                create_folder(DEFAULT_ROOT_LOCATION + "/packages/" + temp.name);
                 local_package_install(temp);
                 std::cout << "Generating hash..." << std::endl;
                 if(execute_cmd(DEFAULT_ROOT_LOCATION + "/create_commit_hash.sh " + temp.name + " " 
@@ -138,7 +150,7 @@ void syncPackages(){
     }
     if(!synced) std::cout << "Already synced. There\'s nothing to do" << std::endl;
     else std::cout << "Sync Complete!" << std::endl;
-    std::cout << "Synced " << synced_number << " packages." << std::endl;
+    std::cout << "Synced " << synced_number << " package(s)." << std::endl;
     cleanup();
 }
 
@@ -185,6 +197,6 @@ void syncPackagesUpdate(){
     }
     if(!synced) std::cout << "Already synced. There\'s nothing to do" << std::endl;
     else std::cout << "Sync Complete!" << std::endl;
-    std::cout << "Synced " << synced_number << " packages." << std::endl;
+    std::cout << "Synced " << synced_number << " package(s)." << std::endl;
     cleanup();
 }
