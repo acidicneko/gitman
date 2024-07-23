@@ -3,6 +3,8 @@ GitMan is a GitHub based source package manager, which installs and manages pack
 GitMan can manage all your software installed independently from GitHub, including installing and updating.
 It supports custom GitHub reposiories which are GitMan compatible.
 
+Special thanks to [cJSON](https://github.com/DaveGamble/cJSON) project without which GitMan wouldn't be how it is today.
+
 ## Dependencies
 GitMan requires the following software to function properly.
 - git
