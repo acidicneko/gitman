@@ -129,12 +129,33 @@ void syncPackages() {
     cJSON *onCommit = cJSON_GetObjectItemCaseSensitive(package, "onCommit");
 
     pkg temp;
-    temp.name = name->valuestring;
-    temp.repo = repo->valuestring;
-    temp.branch = branch->valuestring;
+
+    if (cJSON_IsString(name) && (name->valuestring != NULL)) {
+      temp.name = name->valuestring;
+    } else {
+      std::cout << "\033[1;31mERROR\033[0m: bad package definition"
+                << std::endl;
+      exit_fail();
+    }
+
+    if (cJSON_IsString(repo) && (repo->valuestring != NULL)) {
+      temp.repo = repo->valuestring;
+    } else {
+      std::cout << "\033[1;31mERROR\033[0m: bad package definition"
+                << std::endl;
+      exit_fail();
+    }
+    if (cJSON_IsString(branch) && (branch->valuestring != NULL)) {
+      temp.branch = branch->valuestring;
+    } else {
+      std::cout << "\033[1;31mERROR\033[0m: bad package definition"
+                << std::endl;
+      exit_fail();
+    }
     if (cJSON_IsString(onCommit) && (onCommit->valuestring != NULL)) {
       temp.id = onCommit->valuestring;
     }
+
     if (is_installed(temp.name)) {
       std::cout << "\033[1;32mINFO\033[0m: Skipping: " << temp.name
                 << std::endl;
